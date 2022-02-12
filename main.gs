@@ -8,7 +8,7 @@ function updateRawData(){ //update raw data
   offset = 0;
   limit = 50; //50 records for each query
 
-  do{
+  do{ //loop to get the asset information for the whole collection, 50 each time
     var assetList=null;
 
     while(assetList == null){ //this is to prevent any errors, if the result includes any error (normally error 429), it will retry after 1 second.
@@ -20,7 +20,7 @@ function updateRawData(){ //update raw data
     }
 
     assetList.assets.forEach(function(d, i){ //loop to check each asset
-      let lineToWrite = {};
+      let lineToWrite = [];
       
       //lineToWrite.push(d.dataYouWant);
       
@@ -28,7 +28,9 @@ function updateRawData(){ //update raw data
     })
 
     offset += 50; //check next 50 assets
-    Utilities.sleep(1000); // for OS API limit
+    Utilities.sleep(1000); // for OS API limit, change at you own convenience
   }while(offset <= 9999); //change to max number of assets of the collection
   
   dataSheet.getRange(2,1,NUMBER_OF_ROWS,NUMBER_OF_COLUMNS).setValues(linesToWrite); //indicate number of rows and columns to be set, it must be the same value with the data you get
+
+}
